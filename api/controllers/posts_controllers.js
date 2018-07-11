@@ -39,3 +39,34 @@ exports.posts_create_post = (req, res) => {
       })
     })
 }
+
+exports.posts_get_one = (req, res) => {
+  Posts.findById(req.params.postId)
+    // populate comments, send proper JSON
+    .exec()
+    .then(post => {
+      if (post) {
+        res.status(200).json(post)
+      } else {
+        res.status(404).json({
+          message: 'Post not found!'
+        })
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: err })
+    })
+}
+
+exports.posts_delete_one = (req, res) => {
+  Posts.findByIdAndRemove(req.params.postId)
+    .exec()
+    .then(post => {
+      res.status(200).json({
+        message: 'Post deleted!'
+      })
+    })
+    .catch(err => {
+      res.status(500).json({ error: err })
+    })
+}

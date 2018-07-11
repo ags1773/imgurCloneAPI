@@ -4,10 +4,7 @@ const mongoose = require('mongoose')
 const morgan = require('morgan') // logger
 const bodyParser = require('body-parser')
 const postsRoutes = require('./api/routes/posts_routes')
-
-// mongoose.connect(`mongodb://${process.env.MLAB_ID}:${process.env.MLAB_PASSWORD}@ds013599.mlab.com:13599/devinstance1`,
-//   { useNewUrlParser: true }
-// )
+const commentRoutes = require('./api/routes/comment_routes')
 
 mongoose.connect(process.env.DBURL2, { useNewUrlParser: true })
 
@@ -21,13 +18,14 @@ app.use((req, res, next) => {
     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   )
   if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET')
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, DELETE, GET')
     return res.status(200).json({})
   }
   next()
 })
 
 app.use('/posts', postsRoutes)
+app.use('/posts/:postId/comments', commentRoutes)
 
 app.use((req, res, next) => {
   const error = new Error('Not Found')
