@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 
 exports.posts_get_all = (req, res) => {
   Posts.find()
-    .select('title imageurl description')
+    .select('title imageurl description comments')
+    .populate('comments')
     .exec()
     .then(docs => {
       res.status(200).json({
@@ -42,7 +43,7 @@ exports.posts_create_post = (req, res) => {
 
 exports.posts_get_one = (req, res) => {
   Posts.findById(req.params.postId)
-    // populate comments, send proper JSON
+    .populate('comments')
     .exec()
     .then(post => {
       if (post) {
