@@ -26,22 +26,42 @@ exports.comments_create_comment = (req, res) => {
   Posts.findById(req.params.postId, (err, foundPost) => {
     if (err) return res.status(500).json({ error: err })
     if (!foundPost) return res.status(404).json({ message: 'Post not found!' })
-    if (!req.body.author || !req.body.comment) return res.status(500).json({ error: 'author and/or comment field empty' })
     const newComment = new Comments({
       author: req.body.author,
       comment: req.body.comment
     })
     Comments.create(newComment, (err, createdComment) => {
-      if (err) res.status(500).json({ error: err })
+      if (err) return res.status(500).json({ error: err })
       foundPost.comments.push(createdComment)
       foundPost.save((err) => {
-        if (err) res.status(500).json({ error: err })
+        if (err) return res.status(500).json({ error: err })
         res.status(201).json({
           message: 'Comment saved successfully for postId : ' + req.params.postId
         })
       })
     })
   })
+
+  // Posts.findById(req.params.postId)
+  //   .exec()
+  //   .then(post => {
+  //     if (!post) throw new Error('Post not found!')
+  //     const newComment = new Comments({
+  //       author: req.body.author,
+  //       comment: req.body.comment
+  //     })
+  //     return Comments.create(newComment) // returns promise
+  //   })
+  //   .then(createdComment => {
+  //     post.comments.push(createdComment)
+  //     return post.save() // returns promise
+  //   })
+  //   .then(saved => {
+  //     res.status(201).json({ message: 'Successfully created new comment' })
+  //   })
+  //   .catch(err => {
+  //     res.status(500).json({ error: err.message })
+  //   })
 
   // Posts.findById(req.params.postId)
   //   .exec()

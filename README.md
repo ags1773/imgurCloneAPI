@@ -6,7 +6,8 @@ To run:
   - npm start
 
 Endpoints:
-  /posts - GET, POST
-  /posts/:postId - GET, DELETE
-  /posts/:postId/comments - GET, POST
-  /posts/:postId/comments/:commentId - GET, DELETE
+  - / - all
+  - /posts - GET, POST
+  - /posts/:postId - GET, DELETE
+  - /posts/:postId/comments - GET, POST
+  - /posts/:postId/comments/:commentId - GET, DELETE
