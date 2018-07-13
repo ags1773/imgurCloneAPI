@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-// const comments = require('./comments_model')
 
 const postsSchema = mongoose.Schema({
   title: {type: String, required: true},
