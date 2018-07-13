@@ -10,4 +10,10 @@ const postsSchema = mongoose.Schema({
   }]
 })
 
-module.exports = mongoose.model('Posts', postsSchema)
+const Model = mongoose.model('Posts', postsSchema)
+exports.model = Model
+
+exports.getAllPosts = () => Model.find()
+exports.getPost = (id) => Model.findById(id)
+exports.deletePost = (id) => Model.findByIdAndRemove(id)
+exports.savePost = (newPost) => newPost.save()

@@ -1,6 +1,6 @@
 exports.show_homepage = (req, res) => {
   res.status(200).json({
-    message: 'Welcome to /',
+    message: 'Welcome!',
     endpoints: [
       '/posts - GET, POST',
       '/posts/:postId - GET, DELETE',

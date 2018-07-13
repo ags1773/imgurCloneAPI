@@ -1,8 +1,8 @@
-const Posts = require('../models/posts_model')
-const mongoose = require('mongoose')
+const postsModel = require('../models/posts_model')
+const Posts = postsModel.model
 
 exports.posts_get_all = (req, res) => {
-  Posts.find()
+  postsModel.getAllPosts()
     .select('title imageurl description comments')
     .populate('comments')
     .exec()
@@ -21,14 +21,12 @@ exports.posts_get_all = (req, res) => {
 
 exports.posts_create_post = (req, res) => {
   const newPost = new Posts({
-    _id: new mongoose.Types.ObjectId(),
     title: req.body.title,
     imageurl: req.body.imageurl,
     description: req.body.description
   })
-  newPost
-    .save()
-    .then(result => {
+  postsModel.savePost(newPost)
+    .then(() => {
       res.status(201).json({
         message: 'New post created successfully',
         createdPost: newPost
@@ -42,7 +40,7 @@ exports.posts_create_post = (req, res) => {
 }
 
 exports.posts_get_one = (req, res) => {
-  Posts.findById(req.params.postId)
+  postsModel.getPost(req.params.postId)
     .populate('comments')
     .exec()
     .then(post => {
@@ -60,7 +58,7 @@ exports.posts_get_one = (req, res) => {
 }
 
 exports.posts_delete_one = (req, res) => {
-  Posts.findByIdAndRemove(req.params.postId)
+  postsModel.deletePost(req.params.postId)
     .exec()
     .then(post => {
       res.status(200).json({

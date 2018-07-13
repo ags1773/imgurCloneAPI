@@ -5,4 +5,10 @@ const commentsSchema = mongoose.Schema({
   comment: {type: String, required: true}
 })
 
-module.exports = mongoose.model('Comments', commentsSchema)
+const Model = mongoose.model('Comments', commentsSchema)
+exports.model = Model
+
+exports.getAllComments = () => Model.find()
+exports.createComment = (newComment) => Model.create(newComment)
+exports.getComment = (id) => Model.findById(id)
+exports.deleteComment = (id) => Model.findByIdAndRemove(id)
