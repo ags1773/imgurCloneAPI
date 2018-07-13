@@ -26,6 +26,7 @@ exports.comments_create_comment = (req, res) => {
   Posts.findById(req.params.postId, (err, foundPost) => {
     if (err) return res.status(500).json({ error: err })
     if (!foundPost) return res.status(404).json({ message: 'Post not found!' })
+    if (!req.body.author || !req.body.comment) return res.status(500).json({ error: 'author and/or comment field empty' })
     const newComment = new Comments({
       author: req.body.author,
       comment: req.body.comment
@@ -101,7 +102,7 @@ exports.comments_delete_comment = (req, res) => {
       }
       return Comments.findByIdAndRemove(req.params.commentId).exec()
     })
-    .then(result => res.status(200).json({ 
+    .then(result => res.status(200).json({
       message: 'Comment deleted successfully!',
       result: result
     }))

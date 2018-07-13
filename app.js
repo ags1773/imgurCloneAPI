@@ -5,6 +5,7 @@ const morgan = require('morgan') // logger
 const bodyParser = require('body-parser')
 const postsRoutes = require('./api/routes/posts_routes')
 const commentRoutes = require('./api/routes/comment_routes')
+const homeRoute = require('./api/routes/home_route')
 
 mongoose.connect(process.env.DBURL2, { useNewUrlParser: true })
 
@@ -24,12 +25,13 @@ app.use((req, res, next) => {
   next()
 })
 
+app.use('/', homeRoute)
 app.use('/posts', postsRoutes)
 app.use('/posts/:postId/comments', commentRoutes)
 
 app.use((req, res, next) => {
   const error = new Error('Not Found')
-  error.status(404)
+  error.status = 404
   next(error)
 })
 app.use((error, req, res, next) => {
